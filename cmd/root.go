@@ -1,4 +1,4 @@
-package cmd // import "github.com/cafebazaar/booker-reservation/cmd"
+package cmd
 
 import (
 	"fmt"

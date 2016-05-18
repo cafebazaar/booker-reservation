@@ -5,7 +5,6 @@ COMMIT := $(shell $(GIT) rev-parse HEAD)
 VERSION ?= $(shell $(GIT) describe --tags --exact-match --abbrev=0 --tags ${COMMIT} 2> /dev/null || echo "$(COMMIT)")
 BUILD_TIME := $(shell LANG=en_US date +"%F_%T_%z")
 TARGET := github.com/cafebazaar/booker-reservation
-TARGET_DOTS := "$(shell echo $(TARGET) | sed -e "s/\//./g")"
 LD_FLAGS := -X $(TARGET)/common.Version=$(VERSION) -X $(TARGET)/common.BuildTime=$(BUILD_TIME)
 FORMAT := '{{ join .Deps " " }}'
 
@@ -28,7 +27,11 @@ proto/common.proto:
 proto/internal.pb.gw.go proto/internal.pb.go proto/public.pb.go proto/common.pb.go: proto/internal.proto proto/public.proto proto/common.proto
 	cd proto; go generate -v .
 
-dependencies:
+dependencies: proto/common.proto
+	$(GO) get -u github.com/gengo/grpc-gateway/protoc-gen-grpc-gateway
+	$(GO) get -u github.com/gengo/grpc-gateway/protoc-gen-swagger
+	$(GO) get -u github.com/golang/protobuf/protoc-gen-go
+	cd proto; go generate -v .
 	$(GO) list -f=$(FORMAT) $(TARGET) | xargs $(GO) install
 
 reservation: proto/internal.pb.gw.go proto/internal.pb.go proto/public.pb.go proto/common.pb.go main.go */*.go

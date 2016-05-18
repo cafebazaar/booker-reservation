@@ -1,4 +1,4 @@
-package main // import "github.com/cafebazaar/booker-reservation"
+package main
 
 import (
 	"github.com/cafebazaar/booker-reservation/cmd"
