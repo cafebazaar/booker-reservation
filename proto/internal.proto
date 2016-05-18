@@ -7,13 +7,18 @@ option java_outer_classname = "BookerProto";
 package proto;
 
 import "google/api/annotations.proto";
-import "common.proto";
 import "public.proto";
 
 service Reservation {
-  rpc Get(ReservationGetRequest) returns (ReservationGetReply) {
+  rpc GetReservation(GetReservationRequest) returns (GetReservationReply) {
     option (google.api.http) = {
       get: "/reservation/{objectURI}"
+    };
+  }
+  rpc PostReservation(PostReservationRequest) returns (PostReservationReply) {
+    option (google.api.http) = {
+      post: "/reservation/{objectURI}"
+      body: "*"
     };
   }
 }

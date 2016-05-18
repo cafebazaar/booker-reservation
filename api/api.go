@@ -9,8 +9,16 @@ import (
 
 type reservationService struct{}
 
-func (srv *reservationService) Get(c context.Context, s *proto.ReservationGetRequest) (*proto.ReservationGetReply, error) {
-	p := &proto.ReservationGetReply{
+func (srv *reservationService) GetReservation(c context.Context, s *proto.GetReservationRequest) (*proto.GetReservationReply, error) {
+	p := &proto.GetReservationReply{
+		ReplyProperties: proto.ReplyPropertiesTemplate(),
+	}
+
+	return p, nil
+}
+
+func (srv *reservationService) PostReservation(c context.Context, s *proto.PostReservationRequest) (*proto.PostReservationReply, error) {
+	p := &proto.PostReservationReply{
 		ReplyProperties: proto.ReplyPropertiesTemplate(),
 	}
 

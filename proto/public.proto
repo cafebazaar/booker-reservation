@@ -9,11 +9,28 @@ package proto;
 import "google/api/annotations.proto";
 import "common.proto";
 
-message ReservationGetRequest {
+message ReservationInstance {
+  uint64 startTimestampe = 1;
+  uint64 endTimestampe = 2;
+  string userID = 3;
+}
+
+message GetReservationRequest {
   RequestProperties requestProperties = 1;
   string objectURI = 2;
 }
 
-message ReservationGetReply {
+message GetReservationReply {
+  ReplyProperties replyProperties = 1;
+  ReservationInstance reservation = 2;
+}
+
+message PostReservationRequest {
+  RequestProperties requestProperties = 1;
+  string objectURI = 2;
+  ReservationInstance reservation = 3;
+}
+
+message PostReservationReply {
   ReplyProperties replyProperties = 1;
 }
