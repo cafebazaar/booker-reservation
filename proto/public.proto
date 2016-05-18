@@ -10,14 +10,15 @@ import "google/api/annotations.proto";
 import "common.proto";
 
 message ReservationInstance {
-  uint64 startTimestampe = 1;
-  uint64 endTimestampe = 2;
+  uint64 startTimestamp = 1;
+  uint64 endTimestamp = 2;
   string userID = 3;
 }
 
 message GetReservationRequest {
   RequestProperties requestProperties = 1;
   string objectURI = 2;
+  uint64 timestamp = 3;
 }
 
 message GetReservationReply {
@@ -33,4 +34,5 @@ message PostReservationRequest {
 
 message PostReservationReply {
   ReplyProperties replyProperties = 1;
+  ReservationInstance reservation = 2;
 }
