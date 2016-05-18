@@ -56,7 +56,7 @@ func serveGW() {
 
 	var mux http.Handler
 	gwmux := runtime.NewServeMux()
-	mux = gwmux
+	mux = healthzAddedHandlerFunc(gwmux)
 
 	err = proto.RegisterReservationHandlerFromEndpoint(ctx, gwmux, grpcAddr, dopts)
 	if err != nil {

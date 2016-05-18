@@ -6,6 +6,9 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"time"
+	"net/http"
+	"strings"
 
 	"github.com/cafebazaar/booker-reservation/common"
 )
@@ -13,7 +16,12 @@ import (
 var (
 	_keyPair  *tls.Certificate
 	_certPool *x509.CertPool
+	startTime time.Time
 )
+
+func init() {
+	startTime = time.Now()
+}
 
 func keyPair() (*tls.Certificate, error) {
 	if _keyPair == nil {
@@ -45,4 +53,19 @@ func certPool() (*x509.CertPool, error) {
 		_certPool = newCertPool
 	}
 	return _certPool, nil
+}
+
+// grpcHandlerFunc returns an http.Handler that returns healthz info on /healthz,
+// or delegates to otherHandler otherwise. Copied from cockroachdb and modified.
+func healthzAddedHandlerFunc(otherHandler http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if strings.HasPrefix(r.URL.Path, "/healthz") {
+			w.Header().Set("Content-Type", "text/plain")
+			uptime := time.Now().Sub(startTime)
+			w.Write([]byte(fmt.Sprintf("OK\nVersion: %s\nBuild Time: %s\nUptime: %s",
+				common.Version, common.BuildTime, uptime)))
+		} else {
+			otherHandler.ServeHTTP(w, r)
+		}
+	})
 }
