@@ -19,14 +19,3 @@ func init() {
 		logrus.SetLevel(logrus.DebugLevel)
 	}
 }
-
-type GormLogger struct{}
-
-func (*GormLogger) Print(v ...interface{}) {
-	if v[0] == "sql" {
-		logrus.WithFields(logrus.Fields{"module": "gorm", "type": "sql"}).Debug(v[3])
-	}
-	if v[0] == "log" {
-		logrus.WithFields(logrus.Fields{"module": "gorm", "type": "log"}).Info(v[2])
-	}
-}
