@@ -7,6 +7,7 @@ BUILD_TIME := $(shell LANG=en_US date +"%F_%T_%z")
 TARGET := github.com/cafebazaar/booker-reservation
 LD_FLAGS := -X $(TARGET)/common.Version=$(VERSION) -X $(TARGET)/common.BuildTime=$(BUILD_TIME)
 FORMAT := '{{ join .Deps " " }}'
+DOCKER_IMAGE := 'quay.io/cafebazaar/booker-reservation'
 
 .PHONY: help clean dependencies docker
 help:
